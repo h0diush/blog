@@ -189,12 +189,12 @@ def test(request):
     pass
 
 
-class UpdatePost(DataMixin, UpdateView):
-    model = Post
+class UpdatePost(mixins.LoginRequiredMixin, DataMixin, UpdateView):
     form_class = PostAddForm
     template_name = 'posts/edit.html'
     context_object_name = 'post'
     slug_url_kwarg = 'post_slug'
+    raise_exception = True
 
     def get_success_url(self) -> str:
         return reverse_lazy('index')
@@ -216,10 +216,10 @@ class UpdatePost(DataMixin, UpdateView):
         return super().form_valid(form)
 
 
-class DeletePost(DataMixin, DeleteView):
-    model = Post
+class DeletePost(mixins.LoginRequiredMixin,DataMixin, DeleteView):
     slug_url_kwarg = 'post_slug'
     template_name = 'posts/delete.html'
+    raise_exception = True
 
     def get_success_url(self) -> str:
         return reverse_lazy('index')
