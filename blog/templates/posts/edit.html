@@ -1,0 +1,84 @@
+{% extends 'posts/base.html' %}
+
+{% block banner %}
+<div class="heading-page header-text">
+    <section class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-content">
+              <h4>Добавить пост</h4>
+              <h2>Поделитесь чем-нибудь новым :)</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block posts %}
+<section class="contact-us">
+    <div class="container">
+      <div class="row">
+      
+        <div class="col-lg-12">
+          <div class="down-contact">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="sidebar-item contact-form">
+                  <div class="sidebar-heading">
+                    <h2>Редактирование поста</h2>
+                  </div>
+                  <div class="content">
+                    <form id="contact" action="{% url 'update' post.slug %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- <div class="text-danger p-2">{{ form.non_field_errors }}</div> -->
+                        <p>{{ form.non_field_errors }}</p>
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                          <fieldset>
+                            {{form.title}}                            
+                          </fieldset>
+                        </div>
+                        <!-- <div class="col-md-6 col-sm-12">
+                          <fieldset>
+                            {{ form.slug }}
+                          </fieldset>
+                        </div> -->
+                        <div class="col-md-12 col-sm-12" style="margin-bottom: 24px;">
+                          <fieldset>
+                            {{form.category}}
+                          </fieldset>
+                        </div>
+                        <div class="col-md-12 col-sm-12" style="margin-bottom: 24px;">
+                            <fieldset>
+                              {{form.image}}
+                            </fieldset>
+                            <div class="text-danger">{{ form.errors }}</div>
+                          </div>
+                          <div class="col-md-12 col-sm-12" style="margin-bottom: 24px;">
+                            <fieldset>
+                              {{form.tags}}
+                            </fieldset>
+                          </div>
+                        <div class="col-lg-12">
+                          <fieldset>
+                            {{form.content}}
+                          </fieldset>
+                        </div>
+                        <div class="col-lg-12">
+                          <fieldset>
+                            <button type="submit" id="form-submit" class="main-button">Сохранить</button>
+                            <br><br><br><br><br>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-4">
+                
+{% endblock %}

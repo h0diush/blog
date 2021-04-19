@@ -1,0 +1,163 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+{% block banner %}
+<div class="main-banner header-text">
+    <div class="container-fluid">
+      <div class="owl-banner owl-carousel">
+{% for p in banner %}
+<div class="item">
+            
+    <img src="{{ p.image.url }}" height="389" width="337" alt="">
+    <div class="item-content">
+      <div class="main-content">
+        <div class="meta-category">
+          <span>{{p.category}}</span>
+        </div>
+        <a href="{{p.get_absolute_url}}"><h4>{{p.title }}</h4></a>
+        <ul class="post-info">
+          <li><a href="#">{{p.author}}</a></li>
+          <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
+          {% if p.comments.count == 0 %}
+          <li><a href="#">Нет комментариев</a></li>
+          {% else %}
+          <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block posts %}
+<section class="blog-posts">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="all-blog-posts">
+            <div class="row">
+{% for p in posts %}
+
+<div class="col-lg-12">
+    <div class="blog-post">
+      <div class="blog-thumb">
+        <img src="{{p.image.url}}" width="730" height="322" alt="">
+      </div>
+      <div class="down-content">
+        <span>{{ p.tags.all|join:", " }}</span>
+        <a href="{{p.get_absolute_url}}"><h4>{{ p.title }}</h4></a>
+        <ul class="post-info">
+          <li><a href="#">{{p.author}}</a></li>
+          <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
+          {% if p.comments.count == 0 %}
+          <li><a href="#">Нет комментариев</a></li>
+          {% else %}
+          <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
+          {% endif %}
+        </ul>
+        <p>{{p.content}}</p>
+        <div class="post-options">
+          <div class="row">
+            <div class="col-6">
+              <ul class="post-tags">
+                <li><i class="fa fa-tags"></i></li>
+                <li><a href="{{p.category.get_absolute_url}}">{{p.category}}</a></li>
+              </ul>
+            </div>
+            <div class="col-6">
+              <ul class="post-share">
+                <li><i class="fa fa-share-alt"></i></li>
+                <li><a href="#">Facebook</a>,</li>
+                <li><a href="#"> Twitter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  
+  <div class="col-lg-12">
+    <div class="main-button">
+      {% if posts.all.count > 3 %}
+      <a href="{% url 'posts' %}">Посмотреть все посты</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div class="col-lg-4">
+  <div class="sidebar">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="sidebar-item search">
+          <form id="search_form" name="gs" method="GET" action="{% url 'index' %}">
+            <input type="text" name="q" class="searchText" placeholder="Кликни для поиска" autocomplete="on">
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="sidebar-item recent-posts">
+          <div class="sidebar-heading">
+            <h2>Последние посты</h2>
+          </div>
+          <div class="content">
+            <ul>
+              {% for p in three_post %}
+              <li><a href="{{p.get_absolute_url}}">
+                <h5>{{p.title}}</h5>
+                <span>{{ p.pub_date|date:'m d, Y' }}</span>
+              </a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="sidebar-item categories">
+          <div class="sidebar-heading">
+            <h2>Категории</h2>
+          </div>
+          <div class="content">
+            <ul>
+              {% for c in cats %}
+              <li><a href="{{c.get_absolute_url}}">- {{c.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="sidebar-item tags">
+          <!-- <div class="sidebar-heading">
+            <h2>Tag Clouds</h2>
+          </div> -->
+
+
+<!-- тэги -->
+              <!-- <li><a href="#">Lifestyle</a></li>
+              <li><a href="#">Creative</a></li>
+              <li><a href="#">HTML5</a></li>
+              <li><a href="#">Inspiration</a></li>
+              <li><a href="#">Motivation</a></li>
+              <li><a href="#">PSD</a></li>
+              <li><a href="#">Responsive</a></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+  {% endblock %}

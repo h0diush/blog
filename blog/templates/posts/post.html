@@ -1,0 +1,189 @@
+{% extends 'posts/base.html' %}
+
+
+{% block banner %}
+<div class="heading-page header-text">
+    <section class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-content">
+              <h4>Просмотр поста</h4>
+              <h2>Публикация в блоге</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block posts %}
+
+  <section class="blog-posts grid-system">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="all-blog-posts">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="blog-post">
+                  <div class="blog-thumb">
+                    <img src="{{post.image.url}}" alt="">
+                  </div>
+                  <div class="down-content">
+                    <span>{{ post.tags.all|join:", " }}</span>
+                    <a href="post-details.html"><h4>{{post.title}}</h4></a>
+                    <ul class="post-info">
+                      <li><a href="#">{{post.author}}</a></li>
+                      <li><a href="#">{{ post.pub_date|date:'j M, Y' }}</a></li>
+
+                      <li><a href="#">{{count}}</a></li>
+                    </ul>
+                    <p>{{post.content}}</p>
+                    <div class="post-options">
+                      <div class="row">
+                        <div class="col-6">
+                          <ul class="post-tags">
+                            <li><i class="fa fa-tags"></i></li>
+                            <li><a href="#">{{post.group}}</a></li>
+                          </ul>
+                        </div>
+                        <div class="col-6">
+                          <ul class="post-share">
+                            <li><i class="fa fa-share-alt"></i></li>
+                            {% if request.user == post.author %}
+                            <li><a href="{% url 'update' post.slug %}">Редактировать</a></li>
+
+
+                            <li><a href="{% url 'delete' post.slug %}">Удалить</a></li>
+                              
+                            {% endif %}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="sidebar-item comments">
+                  <div class="sidebar-heading">
+                    <h2>{{count}}</h2>
+                  </div>
+                  <div class="content">
+                    {% for c in comments %}
+                    <ul>
+                      
+                      <li>
+                        <div class="author-thumb">
+                          <img src="{{c.comment_author.avatar.url}}" alt="">
+                        </div>
+                        <div class="right-content">
+                          <h4>{{c.comment_author.username}}<span>{{c.created|date:'j M, Y'}}</span></h4>
+                          <p>{{ c.text }}</p>
+                        </div>
+                      </li>
+                     
+                    </ul>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="sidebar-item submit-comment">
+                  <div class="sidebar-heading">
+                    <h2>Ваш комментарий</h2>
+                  </div>
+                  <div class="content">
+                    <form id="comment" action="{{post.get_absolute_url}}" method="post">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                          <fieldset>
+                            {{form.text}}
+                          </fieldset>
+                        </div>
+                        <div class="col-lg-12">
+                          <fieldset>
+                            <button type="submit" id="form-submit" class="main-button">Отправить</button>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="sidebar-item search">
+                  <form id="search_form" name="gs" method="GET" action="{% url 'index' %}">
+                    <input type="text" name="q" class="searchText" placeholder="Кликни для поиска" autocomplete="on">
+                  </form>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="sidebar-item recent-posts">
+                  <div class="sidebar-heading">
+                    <h2>Последние посты</h2>
+                  </div>
+                  <div class="content">
+                    <ul>
+                      {% for p in three_post %}
+                      <li><a href="{{p.get_absolute_url}}">
+                        <h5>{{p.title}}</h5>
+                        <span>{{ p.pub_date|date:'m d, Y' }}</span>
+                      </a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="sidebar-item categories">
+                  <div class="sidebar-heading">
+                    <h2>Категории</h2>
+                  </div>
+                  <div class="content">
+                    <ul>
+                      {% for c in cats %}
+                      <li><a href="{{c.get_absolute_url}}">- {{c.title}}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="sidebar-item tags">
+                  <div class="sidebar-heading">
+                    <h2>Tag Clouds</h2>
+                  </div>
+
+
+       <!-- тэги -->
+                  <div class="content">
+                    <ul>
+                      <li><a href="#">Lifestyle</a></li>
+                      <li><a href="#">Creative</a></li>
+                      <li><a href="#">HTML5</a></li>
+                      <li><a href="#">Inspiration</a></li>
+                      <li><a href="#">Motivation</a></li>
+                      <li><a href="#">PSD</a></li>
+                      <li><a href="#">Responsive</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
