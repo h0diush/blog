@@ -110,6 +110,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+media/
 
 
 # Spyder project settings
@@ -129,9 +130,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-
-
-.media
-.media/
-media.bak
