@@ -1,9 +1,9 @@
-from django.contrib.auth.models import Group
-from django.test import TestCase, Client
-from blog.models import *
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client, TestCase
 
+from blog.models import *
 
 
 class BaseTestCase(TestCase):
@@ -12,8 +12,8 @@ class BaseTestCase(TestCase):
         super().setUpClass()
 
         cls.category = Category.objects.create(
-            title = 'test_group',
-            slug = 'test_slug_group'
+            title='test_group',
+            slug='test_slug_group'
         )
 
     def setUp(self) -> None:
@@ -36,21 +36,21 @@ class BaseTestCase(TestCase):
         )
 
         self.post = Post.objects.create(
-            title = 'test_title',
-            slug = 'test_post_slug',
-            author = self.user,
-            image = self.uploaded,
-            pub_date = '12.04.2021',
-            category = self.category
+            title='test_title',
+            slug='test_post_slug',
+            author=self.user,
+            image=self.uploaded,
+            pub_date='12.04.2021',
+            category=self.category
         )
 
         self.post = Post.objects.get()
 
         self.comment = Comment.objects.create(
-            post = self.post,
-            comment_author = self.user,
-            text = 'testtext',
-            created = '12.04.2021'
+            post=self.post,
+            comment_author=self.user,
+            text='testtext',
+            created='12.04.2021'
         )
 
         self.comment = Comment.objects.get()

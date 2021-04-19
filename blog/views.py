@@ -1,10 +1,8 @@
 from django.contrib.auth import login, logout, mixins, views
 from django.shortcuts import redirect, render
 from django.urls.base import reverse_lazy
-from django.views.generic import (CreateView, DetailView, ListView,
-                                  TemplateView, edit, UpdateView,
-                                  DeleteView)
-# from django.core.mail import send_mail  -> send email on the mail
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView, edit)
 
 from .forms import *
 from .models import *
@@ -33,7 +31,7 @@ class PostsView(DataMixin, ListView):
     context_object_name = 'posts'
     template_name = 'posts/posts.html'
     raise_exception = True
-    paginate_by = 6
+    # paginate_by = 6
 
     def get_queryset(self):
         return Post.objects.all()
@@ -58,7 +56,8 @@ class ShowGroup(DataMixin, ListView):
         return dict(list(context.items()) + list(mixin.items()))
 
 
-class PostView(mixins.LoginRequiredMixin, DataMixin, DetailView, edit.FormMixin):
+class PostView(mixins.LoginRequiredMixin, DataMixin,
+               DetailView, edit.FormMixin):
     context_object_name = 'post'
     template_name = 'posts/post.html'
     slug_url_kwarg = 'post_slug'
@@ -166,8 +165,7 @@ class AddPost(mixins.LoginRequiredMixin, DataMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         mixin = self.get_user_context(
-            title='Добавить пост', 
-            choice='Добавление поста поста'
+            title='Добавить пост'
         )
         return dict(list(context.items()) + list(mixin.items()))
 
@@ -183,10 +181,6 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(request, "error/500.html", status=500)
-    
-
-def test(request):
-    pass
 
 
 class UpdatePost(mixins.LoginRequiredMixin, DataMixin, UpdateView):
@@ -201,7 +195,7 @@ class UpdatePost(mixins.LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin = self.get_user_context(title='Рекдоктирование поста', choice='Редактирование поста')
+        mixin = self.get_user_context(title='Редактирование поста')
         return dict(list(context.items()) + list(mixin.items()))
 
     def post(self, request, *args, **kwargs):
@@ -216,7 +210,7 @@ class UpdatePost(mixins.LoginRequiredMixin, DataMixin, UpdateView):
         return super().form_valid(form)
 
 
-class DeletePost(mixins.LoginRequiredMixin,DataMixin, DeleteView):
+class DeletePost(mixins.LoginRequiredMixin, DataMixin, DeleteView):
     slug_url_kwarg = 'post_slug'
     template_name = 'posts/delete.html'
     raise_exception = True
@@ -226,6 +220,7 @@ class DeletePost(mixins.LoginRequiredMixin,DataMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin = self.get_user_context(title='Удаление поста ' + self.kwargs['post_slug'])
+        mixin = self.get_user_context(
+            title='Удаление поста ' +
+            self.kwargs['post_slug'])
         return dict(list(context.items()) + list(mixin.items()))
-

@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from taggit.forms import TagField
 
-from .models import UserProfile
 from .models import *
+from .models import UserProfile
 
 
 class ContactForm(forms.ModelForm):

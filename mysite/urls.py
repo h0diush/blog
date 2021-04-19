@@ -1,12 +1,10 @@
-from django.contrib import admin
-from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
-
-handler404 = "blog.views.page_not_found" 
-# handler500 = "blog.views.server_error"  
-
+handler404 = "blog.views.page_not_found"
+# handler500 = "blog.views.server_error"
 
 
 urlpatterns = [
@@ -20,4 +18,3 @@ if settings.DEBUG:
                           document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
-

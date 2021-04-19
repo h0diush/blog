@@ -1,11 +1,12 @@
-from .base import BaseTestCase
 from django.test import TestCase
+
+from .base import BaseTestCase
 
 
 class PostModelsTest(BaseTestCase):
     def test_verbose_name(self):
         post = self.post
-        field_verboses ={
+        field_verboses = {
             'title': 'Заголовок',
             'slug': 'URL',
             'content': 'Контент',
@@ -17,36 +18,36 @@ class PostModelsTest(BaseTestCase):
         }
 
         for value, expected in field_verboses.items():
-                with self.subTest(value=value):
-                    self.assertEqual(
-                        post._meta.get_field(value).verbose_name, expected)
+            with self.subTest(value=value):
+                self.assertEqual(
+                    post._meta.get_field(value).verbose_name, expected)
 
 
 class CategoryModelsTest(BaseTestCase):
     def test_verbose_name(self):
         category = self.category
-        field_verboses ={
+        field_verboses = {
             'title': 'Заголовок',
             'slug': 'URL',
         }
 
         for value, expected in field_verboses.items():
-                with self.subTest(value=value):
-                    self.assertEqual(
-                        category._meta.get_field(value).verbose_name, expected)
+            with self.subTest(value=value):
+                self.assertEqual(
+                    category._meta.get_field(value).verbose_name, expected)
 
 
 class CommentModelsTest(BaseTestCase):
     def test_verbose_name(self):
         comment = self.comment
-        field_verboses ={
+        field_verboses = {
             'post': 'Пост',
             'created': 'Дата и время комментария',
             'comment_author': 'Автор комментария',
             'text': 'Текст комментария'
         }
-        
+
         for value, expected in field_verboses.items():
-                with self.subTest(value=value):
-                    self.assertEqual(
-                        comment._meta.get_field(value).verbose_name, expected)
+            with self.subTest(value=value):
+                self.assertEqual(
+                    comment._meta.get_field(value).verbose_name, expected)
