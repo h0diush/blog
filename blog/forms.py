@@ -67,10 +67,6 @@ class ContactForm(forms.ModelForm):
         fields = '__all__'
 
 
-class CommentForm(forms.ModelForm):
-    pass
-
-
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(
         label='Имя пользователя: ',
