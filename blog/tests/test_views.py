@@ -1,4 +1,3 @@
-from django import forms
 from django.urls import reverse
 
 from blog.models import *
@@ -51,3 +50,19 @@ class PostPagesTest(BaseTestCase):
         self.assertEqual(post_pub_date, self.post.pub_date)
         self.assertEqual(post_category, self.category)
         self.assertEqual(post_image.size, self.uploaded.size)
+
+    def test_post(self):
+        response = self.authorized_client.get(reverse('post', kwargs={'post_slug': 'test_post_slug'}))
+        post_title = response.context.get('post').title
+        post_image = response.context.get('post').image
+        post_category = response.context.get('post').category
+        post_content = response.context.get('post').content
+        post_author = response.context.get("post").author
+        self.assertEqual(post_title, self.post.title)
+        self.assertEqual(post_author, self.user)
+        self.assertEqual(post_content, self.post.content)
+        self.assertEqual(post_category, self.category)
+        self.assertEqual(post_image.size, self.uploaded.size)
+
+
+

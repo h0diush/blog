@@ -17,7 +17,8 @@ class UserProfile(AbstractUser):
     avatar = models.ImageField(
         upload_to='users_avatar/',
         null=True,
-        verbose_name='Аватар')
+        verbose_name='Аватар',
+        blank=True)
 
     class Meta(AbstractUser.Meta):
         pass
