@@ -65,4 +65,4 @@ class PostPagesTest(BaseTestCase):
         self.assertEqual(post_image.size, self.uploaded.size)
 
 
-
+# def check page author !!!!!!!!!

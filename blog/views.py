@@ -224,3 +224,21 @@ class DeletePost(mixins.LoginRequiredMixin, DataMixin, DeleteView):
             title='Удаление поста ' +
             self.kwargs['post_slug'])
         return dict(list(context.items()) + list(mixin.items()))
+
+
+class UserView(DataMixin, ListView):
+    model = UserProfile
+    context_object_name = 'posts'
+    template_name = 'posts/user_post.html'
+
+    def get_queryset(self):
+        return Post.objects.filter(author__username=self.kwargs['username'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = UserProfile.objects.get(username=self.kwargs['username'])
+        mixin = self.get_user_context(title='Посты пользователя ' + self.kwargs['username'])
+        return dict(list(context.items()) + list(mixin.items()))
+
+    
+# delete comment !!!!!!!!

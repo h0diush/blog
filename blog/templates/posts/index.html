@@ -16,7 +16,7 @@
         </div>
         <a href="{{p.get_absolute_url}}"><h4>{{p.title }}</h4></a>
         <ul class="post-info">
-          <li><a href="#">{{p.author}}</a></li>
+          <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
           <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
           {% if p.comments.count == 0 %}
           <li><a href="#">Нет комментариев</a></li>
@@ -52,7 +52,7 @@
         <span>{{ p.tags.all|join:", " }}</span>
         <a href="{{p.get_absolute_url}}"><h4>{{ p.title }}</h4></a>
         <ul class="post-info">
-          <li><a href="#">{{p.author}}</a></li>
+          <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
           <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
           {% if p.comments.count == 0 %}
           <li><a href="#">Нет комментариев</a></li>

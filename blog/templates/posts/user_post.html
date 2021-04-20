@@ -1,6 +1,5 @@
 {% extends 'posts/base.html' %}
 
-
 {% block banner %}
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -8,8 +7,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="text-content">
-              <h4>НЕДАВНИЕ ПОСТЫ</h4>
-              <h2>НАШИ ПОСЛЕДНИЕ ЗАПИСИ В БЛОГЕ</h2>
+              <h4>{{ user }}</h4>
+              <h2>Это все его посты</h2>
             </div>
           </div>
         </div>
@@ -36,7 +35,7 @@
                     <span>{{ p.tags.all|join:", " }}</span>
                     <a href="{{p.get_absolute_url}}"><h4>{{p.title}}</h4></a>
                     <ul class="post-info">
-                      <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
+                      <li><a href="#">{{p.author}}</a></li>
                       <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
                       {% if  p.comments.count == 0 %}
                       <li><a href="#">Нет комментариев</a></li>
@@ -98,38 +97,10 @@
                   <div class="content">
                     <ul>
                       {% for c in cats %}
-                      <li><a href="#">- {{c.title}}</a></li>
+                      <li><a href="{{ c.get_absolute_url }}">- {{c.title}}</a></li>
                       {% endfor %}
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-12">
-                <div class="sidebar-item tags">
-                  <div class="sidebar-heading">
-                    <h2>Tag Clouds</h2>
-                  </div>
-
-
-       <!-- тэги -->
-                  <div class="content">
-                    <ul>
-                      <li><a href="#">Lifestyle</a></li>
-                      <li><a href="#">Creative</a></li>
-                      <li><a href="#">HTML5</a></li>
-                      <li><a href="#">Inspiration</a></li>
-                      <li><a href="#">Motivation</a></li>
-                      <li><a href="#">PSD</a></li>
-                      <li><a href="#">Responsive</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 {% endblock %}
