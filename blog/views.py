@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout, mixins, views
-from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView, edit)
@@ -84,8 +85,9 @@ class PostView(mixins.LoginRequiredMixin, DataMixin,
         context['comments'] = self.object.comments.all()
         mixin = self.get_user_context(title=context['post'])
         count = self.cont_comment(slug=self.kwargs['post_slug'])
+        like = self.like()
         return dict(list(context.items()) +
-                    list(mixin.items()) + list(count.items()))
+                    list(mixin.items()) + list(count.items()) + list(like.items()))
 
 
 class About(DataMixin, TemplateView):
@@ -236,9 +238,24 @@ class UserView(DataMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = UserProfile.objects.get(username=self.kwargs['username'])
-        mixin = self.get_user_context(title='Посты пользователя ' + self.kwargs['username'])
+        context['user'] = UserProfile.objects.get(
+            username=self.kwargs['username'])
+        mixin = self.get_user_context(
+            title='Посты пользователя ' +
+            self.kwargs['username'])
         return dict(list(context.items()) + list(mixin.items()))
 
-    
-# delete comment !!!!!!!!
+
+@login_required
+def like(request, post_slug):
+    post = get_object_or_404(Post, slug=post_slug)
+    Like.objects.get_or_create(user=request.user, post=post)
+    return redirect('post', post_slug)
+
+
+@login_required
+def dislike(request, post_slug):
+    post = get_object_or_404(Post, slug=post_slug)
+    like = Like.objects.get(user=request.user, post=post)
+    like.delete()
+    return redirect('post', post_slug)

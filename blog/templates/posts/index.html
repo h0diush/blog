@@ -59,6 +59,11 @@
           {% else %}
           <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
           {% endif %}
+          {% if p.likes.all.count != 0 %}
+          <li><a href="#">Лайки: {{p.likes.all.count}}</a></li>
+          {% else %}
+          <li><a href="#">Нет лайков</a></li>
+          {% endif %}
         </ul>
         <p>{{p.content}}</p>
         <div class="post-options">
@@ -71,9 +76,7 @@
             </div>
             <div class="col-6">
               <ul class="post-share">
-                <li><i class="fa fa-share-alt"></i></li>
-                <li><a href="#">Facebook</a>,</li>
-                <li><a href="#"> Twitter</a></li>
+                
               </ul>
             </div>
           </div>

@@ -42,6 +42,7 @@ class ContactAdmin(admin.ModelAdmin):
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)
+admin.site.register(Like)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Contact, ContactAdmin)
 # Register your models here.

@@ -52,7 +52,8 @@ class PostPagesTest(BaseTestCase):
         self.assertEqual(post_image.size, self.uploaded.size)
 
     def test_post(self):
-        response = self.authorized_client.get(reverse('post', kwargs={'post_slug': 'test_post_slug'}))
+        response = self.authorized_client.get(
+            reverse('post', kwargs={'post_slug': 'test_post_slug'}))
         post_title = response.context.get('post').title
         post_image = response.context.get('post').image
         post_category = response.context.get('post').category

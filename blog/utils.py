@@ -28,3 +28,19 @@ class DataMixin:
             comment_count = f'{count} Комментариев'
         context['count'] = comment_count
         return context
+
+    def like(self, **kwargs):
+        context = kwargs
+        post = Post.objects.get(slug=self.kwargs['post_slug'])
+        likes = post.likes.all()
+        post_likes = []
+        like_bool = False
+        for us in likes:
+            user_like = us.user
+            post_likes.append(user_like)
+        if self.request.user in post_likes:
+            like_bool = True
+        count = post.likes.count()
+        context['like_bool'] = like_bool
+        context['count_like'] = count
+        return context

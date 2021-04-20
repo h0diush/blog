@@ -101,7 +101,7 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self) -> str:
-        return self.text
+        return f'{self.comment_author} -> {self.text}'
 
 
 class Contact(models.Model):
@@ -117,4 +117,23 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return f'{self.email} -> {self.text}'
-# Create your models here.
+
+
+class Like(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        verbose_name='Пост',
+        related_name='likes')
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='likes')
+
+    class Meta:
+        verbose_name = 'Лайк'
+        verbose_name_plural = "Лайки"
+
+    def __str__(self) -> str:
+        return f'{self.user} -> {self.post}'

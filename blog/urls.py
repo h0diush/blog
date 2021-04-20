@@ -15,5 +15,7 @@ urlpatterns = [
     path('users/logout/', logout_user, name='logout'),
     path('post/update/<slug:post_slug>/', UpdatePost.as_view(), name='update'),
     path('post/delete/<slug:post_slug>', DeletePost.as_view(), name='delete'),
-    path('user/<slug:username>', UserView.as_view(), name='user')
+    path('user/<slug:username>', UserView.as_view(), name='user'),
+    path('post/<slug:post_slug>/like', like, name='like'),
+    path('post/<slug:post_slug>/dislike', dislike, name='dislike'),
 ]

@@ -1,6 +1,6 @@
 {% extends 'posts/base.html' %}
 
-
+{% load static %}
 {% block banner %}
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -29,9 +29,9 @@
               <div class="col-lg-12">
                 <div class="blog-post">
                   <div class="blog-thumb">
-                    <img src="{{post.image.url}}" alt="">
+                    <img src="{{post.image.url}}" alt="">                    
                   </div>
-                  <div class="down-content">
+                  <div class="down-content">                    
                     <span>{{ post.tags.all|join:", " }}</span>
                     <a href="post-details.html"><h4>{{post.title}}</h4></a>
                     <ul class="post-info">
@@ -40,16 +40,25 @@
 
                       <li><a href="#">{{count}}</a></li>
                     </ul>
+                    
                     <p>{{post.content}}</p>
+                    {% if not like_bool %}
+                    <p class="text-right"><a href="{% url 'like' post.slug %}"><img src="{% static 'images/like/like.png' %}" alt="">  Лайки: {{count_like}}</p>
+                    {% else %}
+                    <p class="text-right"><a href="{% url 'dislike' post.slug %}"><img src="{% static 'images/like/no_like.png' %}" alt="">  Лайки: {{count_like}}</p>
+                    <p></p>
+                    {% endif %}
                     <div class="post-options">
                       <div class="row">
                         <div class="col-6">
                           <ul class="post-tags">
                             <li><i class="fa fa-tags"></i></li>
-                            <li><a href="#">{{post.group}}</a></li>
+                            <li><a href="{{post.category.get_absolute_url}}">{{post.category}}</a></li>
+                            
                           </ul>
                         </div>
                         <div class="col-6">
+                          
                           <ul class="post-share">
                             <li><i class="fa fa-share-alt"></i></li>
                             {% if request.user == post.author %}

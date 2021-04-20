@@ -42,6 +42,11 @@
                       {% else %}
                       <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
                       {% endif %}
+                      {% if p.likes.all.count != 0 %}
+                      <li><a href="#">Лайки: {{p.likes.all.count}}</a></li>
+                      {% else %}
+                      <li><a href="#">Нет лайков</a></li>
+                      {% endif %}
                     </ul>
                     <p>{{p.content|truncatechars:120}}</p>
                     <div class="post-options">
