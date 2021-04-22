@@ -35,7 +35,7 @@
                     <span>{{ post.tags.all|join:", " }}</span>
                     <a href="post-details.html"><h4>{{post.title}}</h4></a>
                     <ul class="post-info">
-                      <li><a href="#">{{post.author}}</a></li>
+                      <li><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></li>
                       <li><a href="#">{{ post.pub_date|date:'j M, Y' }}</a></li>
 
                       <li><a href="#">{{count}}</a></li>
@@ -43,9 +43,9 @@
                     
                     <p>{{post.content}}</p>
                     {% if not like_bool %}
-                    <p class="text-right"><a href="{% url 'like' post.slug %}"><img src="{% static 'images/like/like.png' %}" alt="">  Лайки: {{count_like}}</p>
+                    <p class="text-right"><a href="{% url 'like' post.slug %}" class="like_button like"><img src="{% static 'images/like/like.png' %}" alt="">  Лайки: {{count_like}}</p>
                     {% else %}
-                    <p class="text-right"><a href="{% url 'dislike' post.slug %}"><img src="{% static 'images/like/no_like.png' %}" alt="">  Лайки: {{count_like}}</p>
+                    <p class="text-right"><a href="{% url 'dislike' post.slug %}" class="like_button like"><img src="{% static 'images/like/no_like.png' %}" alt="">  Лайки: {{count_like}}</p>
                     <p></p>
                     {% endif %}
                     <div class="post-options">
@@ -194,5 +194,6 @@
       </div>
     </div>
   </section>
-
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/my_js.js' %}"></script>
 {% endblock %}

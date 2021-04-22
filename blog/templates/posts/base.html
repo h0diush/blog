@@ -78,10 +78,10 @@ https://templatemo.com/tm-551-stand-blog
                 <a class="nav-link" href="{% url 'add_post' %}">Добавить пост</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                <a class="nav-link" href="{% url 'profile' request.user.username %}">Кабинет(сделать)</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Кабинет</a>
+                <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
               </li>
               {% endif %}
             </ul>
@@ -93,23 +93,6 @@ https://templatemo.com/tm-551-stand-blog
 {% endblock %}          
 {% block posts %}
 {% endblock %} 
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <ul class="social-icons">
-              <li><a href="#">Facebook</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Behance</a></li>
-              <li><a href="#">Linkedin</a></li>
-              <li><a href="#">Dribbble</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-12">
-          </div>
-        </div>
-      </div>
-    </footer>
 
     <!-- Bootstrap core JavaScript -->
     <script src="{% static 'js/jquery.min.js' %}"></script>

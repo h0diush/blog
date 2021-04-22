@@ -137,3 +137,26 @@ class Like(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.post}'
+
+
+class Follow(models.Model):
+    author = models.ForeignKey(
+        UserProfile, 
+        on_delete=models.CASCADE, 
+        verbose_name='Подписка', 
+        related_name='following')
+    user = models.ForeignKey(
+        UserProfile, 
+        on_delete=models.CASCADE, 
+        verbose_name='Подписчик', 
+        related_name='follower')
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_follow')]
+
+    def __str__(self) -> str:
+        return '%s подписался на %s' % (self.author, self.user)

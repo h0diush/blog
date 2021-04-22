@@ -7,8 +7,16 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="text-content">
-              <h4>{{ user }}</h4>
+              <h4> Пользователь -> {{ user }}</h4>
               <h2>Это все его посты</h2>
+              <p>Подписчики: {{subscribers}}    Подписки: {{subscription}}</p>
+              <div class="d-flex" style="margin-top: 24px;"></div>
+                {% if not follow_bool %}
+                <a href="{% url 'follow' user.username %}"><button type="submit" class="btn btn-success">Подписаться</button></a>
+                {% else %}
+                <a href="{% url 'unfollow' user.username %}"><button type="submit" class="btn btn-danger">Отписаться</button></a>
+                {% endif %}
+            </div>
             </div>
           </div>
         </div>
@@ -35,7 +43,7 @@
                     <span>{{ p.tags.all|join:", " }}</span>
                     <a href="{{p.get_absolute_url}}"><h4>{{p.title}}</h4></a>
                     <ul class="post-info">
-                      <li><a href="#">{{p.author}}</a></li>
+                      <!-- <li><a href="#">{{p.author}}</a></li> -->
                       <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
                       {% if  p.comments.count == 0 %}
                       <li><a href="#">Нет комментариев</a></li>

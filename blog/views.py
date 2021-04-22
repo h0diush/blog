@@ -243,7 +243,8 @@ class UserView(DataMixin, ListView):
         mixin = self.get_user_context(
             title='Посты пользователя ' +
             self.kwargs['username'])
-        return dict(list(context.items()) + list(mixin.items()))
+        follow = self.subscription()
+        return dict(list(context.items()) + list(mixin.items()) + list(follow.items()))
 
 
 @login_required
@@ -259,3 +260,36 @@ def dislike(request, post_slug):
     like = Like.objects.get(user=request.user, post=post)
     like.delete()
     return redirect('post', post_slug)
+
+
+class UserProfileView(DataMixin, ListView):
+    context_object_name = 'posts'
+    template_name = 'posts/profile.html'
+
+    def get_queryset(self):
+        return Post.objects.filter(author__username=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mixin = self.get_user_context(title='Кабинет ' + self.kwargs['username'])
+        return dict(list(context.items()) + list(mixin.items()))
+
+
+@login_required
+def follow_author(request, username):
+    author = get_object_or_404(UserProfile, username=username)
+    if request.user != author:
+        Follow.objects.create(
+            author = author,
+            user = request.user
+        )
+    return redirect('user', username)
+
+
+@login_required
+def unfollow_author(request, username):
+    author = get_object_or_404(UserProfile, username=username)
+    user = get_object_or_404(UserProfile, username=request.user)
+    follow = Follow.objects.filter(author=author, user=user)
+    follow.delete()
+    return redirect('user', username)

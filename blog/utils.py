@@ -43,4 +43,21 @@ class DataMixin:
         count = post.likes.count()
         context['like_bool'] = like_bool
         context['count_like'] = count
+        context['likes'] = likes
+        return context
+
+    def subscription(self, **kwargs):
+        context = kwargs
+        user = UserProfile.objects.get(username=self.kwargs['username'])
+        followers =[]
+        follow = False
+        following = user.following.all()
+        for us in following:
+            author_fol = us.user
+            followers.append(author_fol)
+        if self.request.user in followers:
+            follow = True
+        context['subscribers'] = user.following.count()
+        context['subscription'] = user.follower.count()
+        context['follow_bool'] = follow
         return context

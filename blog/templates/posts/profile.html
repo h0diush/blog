@@ -1,0 +1,58 @@
+{% extends 'posts/base.html' %}
+
+{% block banner %}
+
+  {% endblock %}
+
+  {% block posts %}
+  <section class="blog-posts grid-system">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="all-blog-posts">
+            <div class="row">
+              <!-- Пост  -->
+              {% for p in like_posts %}
+              <div class="col-lg-6">
+                <div class="blog-post">
+                  <div class="blog-thumb">
+                    <img src="{{p.image.url}}" alt="">
+                  </div>
+                  <div class="down-content">
+                    <span>{{ p.tags.all|join:", " }}</span>
+                    <a href="{{p.get_absolute_url}}"><h4>{{p.title}}</h4></a>
+                    <ul class="post-info">
+                      <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
+                      <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
+                      {% if  p.comments.count == 0 %}
+                      <li><a href="#">Нет комментариев</a></li>
+                      {% else %}
+                      <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
+                      {% endif %}
+                      {% if p.likes.all.count != 0 %}
+                      <li><a href="#">Лайки: {{p.likes.all.count}}</a></li>
+                      {% else %}
+                      <li><a href="#">Нет лайков</a></li>
+                      {% endif %}
+                    </ul>
+                    <p>{{p.content|truncatechars:120}}</p>
+                    <div class="post-options">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <ul class="post-tags">
+                            <li><i class="fa fa-tags"></i></li>
+                            <li><a href="{{p.category.get_absolute_url}}">{{p.category}}</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Конец поста -->
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+{% endblock %}
