@@ -11,11 +11,13 @@
               <h2>Это все его посты</h2>
               <p>Подписчики: {{subscribers}}    Подписки: {{subscription}}</p>
               <div class="d-flex" style="margin-top: 24px;"></div>
+              {% if user != request.user %}
                 {% if not follow_bool %}
                 <a href="{% url 'follow' user.username %}"><button type="submit" class="btn btn-success">Подписаться</button></a>
                 {% else %}
                 <a href="{% url 'unfollow' user.username %}"><button type="submit" class="btn btn-danger">Отписаться</button></a>
                 {% endif %}
+              {% endif %}
             </div>
             </div>
           </div>

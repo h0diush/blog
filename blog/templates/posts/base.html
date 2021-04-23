@@ -78,7 +78,7 @@ https://templatemo.com/tm-551-stand-blog
                 <a class="nav-link" href="{% url 'add_post' %}">Добавить пост</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile' request.user.username %}">Кабинет(сделать)</a>
+                <a class="nav-link" href="{% url 'profile' request.user.username %}">Кабинет ({{request.user}})</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Выйти</a>

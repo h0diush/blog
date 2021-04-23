@@ -271,8 +271,10 @@ class UserProfileView(DataMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['user'] = UserProfile.objects.get(username=self.request.user)
+        context['other_user'] = Post.objects.exclude(author__username=self.request.user)[:3]
         mixin = self.get_user_context(title='Кабинет ' + self.kwargs['username'])
-        return dict(list(context.items()) + list(mixin.items()))
+        return dict(list(context.items()) + list(mixin.items()) + list(self.subscription().items()))
 
 
 @login_required
@@ -293,3 +295,35 @@ def unfollow_author(request, username):
     follow = Follow.objects.filter(author=author, user=user)
     follow.delete()
     return redirect('user', username)
+
+
+@login_required
+def delete_user(request, username):
+    user = get_object_or_404(UserProfile, username=username)
+    user.delete()
+    logout(request)
+    return redirect('index')
+
+
+class UpdateUerView(mixins.LoginRequiredMixin, DataMixin, UpdateView):
+    form_class = RegisterUserForm
+    template_name = 'users/update.html'
+    # slug_url_kwarg = 'update_username'
+    context_object_name ='user'
+
+    def get_success_url(self):
+        login(user)
+        return reverse('index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mixin = self.get_user_context(title="Редактирование ")
+        return dict(list(context.items()) +list(mixin.items()))
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')

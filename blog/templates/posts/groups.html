@@ -92,7 +92,7 @@
               {% for p in three_post %}
               <li><a href="{{p.get_absolute_url}}">
                 <h5>{{p.title}}</h5>
-                <span>{{ p.pub_date|date:'m d, Y' }}</span>
+                <span>{{ p.pub_date|date:'d m, Y' }}</span>
               </a></li>
               {% endfor %}
             </ul>

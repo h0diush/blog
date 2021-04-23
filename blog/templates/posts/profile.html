@@ -1,58 +1,156 @@
 {% extends 'posts/base.html' %}
 
 {% block banner %}
-
+<div class="heading-page header-text">
+  
+  <section class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-content">
+            <h4>Личный кабинет </h4>
+            <h2>Привет, {% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</h2>
+            <p>Подписчики: {{subscribers}}    Подписки: {{subscription}}</p>
+            <div class="d-flex" style="margin-top: 24px;"></div>
+                <a href="{% url 'user_update' %}"><button type="submit" class="btn btn-success">Редактировать</button></a>
+                <a href="{% url 'user_delete' user.username %}"><button type="submit" class="btn btn-danger">Удалить</button></a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
   {% endblock %}
 
   {% block posts %}
-  <section class="blog-posts grid-system">
+  {% if posts %}
+  <section class="blog-posts">
     <div class="container">
       <div class="row">
         <div class="col-lg-8">
           <div class="all-blog-posts">
             <div class="row">
-              <!-- Пост  -->
-              {% for p in like_posts %}
-              <div class="col-lg-6">
-                <div class="blog-post">
-                  <div class="blog-thumb">
-                    <img src="{{p.image.url}}" alt="">
-                  </div>
-                  <div class="down-content">
-                    <span>{{ p.tags.all|join:", " }}</span>
-                    <a href="{{p.get_absolute_url}}"><h4>{{p.title}}</h4></a>
-                    <ul class="post-info">
-                      <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
-                      <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
-                      {% if  p.comments.count == 0 %}
-                      <li><a href="#">Нет комментариев</a></li>
-                      {% else %}
-                      <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
-                      {% endif %}
-                      {% if p.likes.all.count != 0 %}
-                      <li><a href="#">Лайки: {{p.likes.all.count}}</a></li>
-                      {% else %}
-                      <li><a href="#">Нет лайков</a></li>
-                      {% endif %}
-                    </ul>
-                    <p>{{p.content|truncatechars:120}}</p>
-                    <div class="post-options">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <ul class="post-tags">
-                            <li><i class="fa fa-tags"></i></li>
-                            <li><a href="{{p.category.get_absolute_url}}">{{p.category}}</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Конец поста -->
-              {% endfor %}
+{% for p in posts %}
+
+<div class="col-lg-12">
+    <div class="blog-post">
+      <div class="blog-thumb">
+        <img src="{{p.image.url}}" width="730" height="322" alt="">
+      </div>
+      <div class="down-content">
+        <span>{{ p.tags.all|join:", " }}</span>
+        <a href="{{p.get_absolute_url}}"><h4>{{ p.title }}</h4></a>
+        <ul class="post-info">
+          <li><a href="{% url 'user' p.author.username  %}">{{p.author}}</a></li>
+          <li><a href="#">{{ p.pub_date|date:'j M, Y' }}</a></li>
+          {% if p.comments.count == 0 %}
+          <li><a href="#">Нет комментариев</a></li>
+          {% else %}
+          <li><a href="#">Комментариев: {{p.comments.count}}</a></li>
+          {% endif %}
+          {% if p.likes.all.count != 0 %}
+          <li><a href="#">Лайки: {{p.likes.all.count}}</a></li>
+          {% else %}
+          <li><a href="#">Нет лайков</a></li>
+          {% endif %}
+        </ul>
+        <p>{{p.content}}</p>
+        
+        <div class="post-options">
+          <div class="row">
+            <div class="col-6">
+              <ul class="post-tags">
+                <li><a href="{{p.category.get_absolute_url}}">{{p.category}}</a></li>
+              </ul>
+            </div>
+            <div class="col-6">
+              <ul class="post-share">
+                <li  style="margin-right: 8px;"><a href="{% url 'follow' user.username %}"><button type="submit" class="btn btn-success">Редактировать</button></a></li>
+                <li><a href="{% url 'delete' p.slug %}"><button type="submit" class="btn btn-danger">Удалить</button></a></li>
+              </ul>
             </div>
           </div>
         </div>
-        
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+ 
+  <div class="col-lg-12">
+    <div class="main-button">
+  
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="col-lg-4">
+  <div class="sidebar">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="sidebar-item recent-posts">
+          <div class="sidebar-heading">
+            <h2>Посты других пользователей</h2>
+          </div>
+          <div class="content">
+            <ul>
+              {% for p in other_user %}
+              <li><a href="{{p.get_absolute_url}}">
+                <h5>{{p.title}}</h5>
+                <span>{{ p.pub_date|date:'m d, Y' }}</span>
+              </a></li>
+              {% endfor %}
+            </ul>
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="sidebar-item categories">
+          <div class="sidebar-heading">
+            <h2>Категории</h2>
+          </div>
+          <div class="content">
+            <ul>
+              {% for c in cats %}
+              <li><a href="{{c.get_absolute_url}}">- {{c.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="sidebar-item tags">
+          <!-- <div class="sidebar-heading">
+            <h2>Tag Clouds</h2>
+          </div> -->
+
+
+<!-- тэги -->
+              <!-- <li><a href="#">Lifestyle</a></li>
+              <li><a href="#">Creative</a></li>
+              <li><a href="#">HTML5</a></li>
+              <li><a href="#">Inspiration</a></li>
+              <li><a href="#">Motivation</a></li>
+              <li><a href="#">PSD</a></li>
+              <li><a href="#">Responsive</a></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+</div>
+</div>
+</div>
+
+</div>
+</section> 
+{% else %}
+<h1 class="text-center">НЕТ ПОСТОВ</h1>
+{% endif %}
 {% endblock %}
