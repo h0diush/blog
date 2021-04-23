@@ -52,7 +52,6 @@
                       <div class="row">
                         <div class="col-6">
                           <ul class="post-tags">
-                            <li><i class="fa fa-tags"></i></li>
                             <li><a href="{{post.category.get_absolute_url}}">{{post.category}}</a></li>
                             
                           </ul>
@@ -60,12 +59,10 @@
                         <div class="col-6">
                           
                           <ul class="post-share">
-                            <li><i class="fa fa-share-alt"></i></li>
                             {% if request.user == post.author %}
-                            <li><a href="{% url 'update' post.slug %}">Редактировать</a></li>
-
-
-                            <li><a href="{% url 'delete' post.slug %}">Удалить</a></li>
+                            <li  style="margin-right: 8px;"><a href="{% url 'update' post.slug %}"><button type="submit" class="btn btn-success">Редактировать</button></a></li>
+                            <li><a href="{% url 'delete' post.slug %}"><button type="submit" class="btn btn-danger">Удалить</button></a></li>
+             
                               
                             {% endif %}
                           </ul>

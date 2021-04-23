@@ -308,12 +308,7 @@ def delete_user(request, username):
 class UpdateUerView(mixins.LoginRequiredMixin, DataMixin, UpdateView):
     form_class = RegisterUserForm
     template_name = 'users/update.html'
-    # slug_url_kwarg = 'update_username'
     context_object_name ='user'
-
-    def get_success_url(self):
-        login(user)
-        return reverse('index')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
