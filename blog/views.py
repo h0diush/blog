@@ -19,7 +19,7 @@ class HomePage(DataMixin, ListView):
         if search_query:
             posts = Post.objects.filter(title__icontains=search_query)
         else:
-            posts = Post.objects.all()[:3]
+            posts = Post.objects.all().select_related('category')[:3]
         return posts
 
     def get_context_data(self, **kwargs):
@@ -49,7 +49,7 @@ class ShowGroup(DataMixin, ListView):
     raise_exception = True
 
     def get_queryset(self):
-        return Post.objects.filter(category__slug=self.kwargs['group_slug'])
+        return Post.objects.filter(category__slug=self.kwargs['group_slug']).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -234,7 +234,7 @@ class UserView(DataMixin, ListView):
     template_name = 'posts/user_post.html'
 
     def get_queryset(self):
-        return Post.objects.filter(author__username=self.kwargs['username'])
+        return Post.objects.filter(author__username=self.kwargs['username']).select_related('author').prefetch_related('author')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

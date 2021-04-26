@@ -66,7 +66,7 @@
             </div>
             <div class="col-6">
               <ul class="post-share">
-                <li  style="margin-right: 8px;"><a href="{% url 'follow' user.username %}"><button type="submit" class="btn btn-success">Редактировать</button></a></li>
+                <li  style="margin-right: 8px;"><a href="{% url 'update' p.slug %}"><button type="submit" class="btn btn-success">Редактировать</button></a></li>
                 <li><a href="{% url 'delete' p.slug %}"><button type="submit" class="btn btn-danger">Удалить</button></a></li>
               </ul>
             </div>

@@ -8,8 +8,8 @@ class DataMixin:
         context = kwargs
         cats = Category.objects.all()
         context['cats'] = cats
-        context['banner'] = Post.objects.all()[:5]
-        context['three_post'] = Post.objects.all()[:3]
+        context['banner'] = Post.objects.all().select_related('category')[:5]
+        context['three_post'] = Post.objects.all().select_related('category')[:3]
         return context
 
     def cont_comment(self, slug, **kwargs):
