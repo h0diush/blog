@@ -1,5 +1,6 @@
 {% extends 'posts/base.html' %}
 
+{% load static %}
 {% block banner %}
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -11,7 +12,7 @@
               <h2>Это все его посты</h2>
               <p>Подписчики: {{subscribers}}    Подписки: {{subscription}}</p>
               <div class="d-flex" style="margin-top: 24px;"></div>
-              {% if user != request.user %}
+                {% if user != request.user %}
                 {% if not follow_bool %}
                 <a href="{% url 'follow' user.username %}"><button type="submit" class="btn btn-success">Подписаться</button></a>
                 {% else %}
@@ -39,7 +40,11 @@
               <div class="col-lg-6">
                 <div class="blog-post">
                   <div class="blog-thumb">
-                    <img src="{{p.image.url}}" alt="">
+                    {% if p.image %}     
+                    <img src="{{ p.image.url }}" alt="">
+                    {% else %}
+                    <img src="{% static 'images/no_photo.jpg' %}" alt="">
+                    {% endif %}
                   </div>
                   <div class="down-content">
                     <span>{{ p.tags.all|join:", " }}</span>

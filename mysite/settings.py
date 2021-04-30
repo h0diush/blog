@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'debug_toolbar',
     'blog.apps.BlogConfig',
+    'api.apps.ApiConfig',
     'taggit',
 ]
 
@@ -119,6 +123,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%d.%m.%Y - %H:%M:%S",
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+
+    'PAGE_SIZE': 10,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

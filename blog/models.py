@@ -13,12 +13,29 @@ def rand_slug():
                    for _ in range(6))
 
 
+class Role(models.TextChoices):
+    USER = 'user'
+    MODERATOR = 'moderator'
+    ADMIN = 'admin'
+
+
 class UserProfile(AbstractUser):
     avatar = models.ImageField(
         upload_to='users_avatar/',
         null=True,
         verbose_name='Аватар',
         blank=True)
+
+    role = models.CharField(
+        max_length=10,
+        verbose_name='Роль',
+        choices=Role.choices,
+        default=Role.USER
+    )
+
+    @property
+    def user_role(self):
+        return self.role
 
     def get_absolute_url(self):
         return reverse('user', kwargs={'username': self.username})
@@ -54,11 +71,16 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='posts')
-    image = models.ImageField(upload_to='posts/', verbose_name='Картинка')
+    image = models.ImageField(
+        upload_to='posts/',
+        verbose_name='Картинка',
+        null=True,
+        blank=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name='Категория',
         related_name='posts')
     tags = TaggableManager(blank=True, verbose_name='Тэги')
@@ -141,14 +163,14 @@ class Like(models.Model):
 
 class Follow(models.Model):
     author = models.ForeignKey(
-        UserProfile, 
-        on_delete=models.CASCADE, 
-        verbose_name='Подписка', 
+        UserProfile,
+        on_delete=models.CASCADE,
+        verbose_name='Подписка',
         related_name='following')
     user = models.ForeignKey(
-        UserProfile, 
-        on_delete=models.CASCADE, 
-        verbose_name='Подписчик', 
+        UserProfile,
+        on_delete=models.CASCADE,
+        verbose_name='Подписчик',
         related_name='follower')
 
     class Meta:

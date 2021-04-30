@@ -16,7 +16,10 @@ urlpatterns = [
     path('post/update/<slug:post_slug>/', UpdatePost.as_view(), name='update'),
     path('post/delete/<slug:post_slug>', DeletePost.as_view(), name='delete'),
     path('posts/user/<slug:username>', UserView.as_view(), name='user'),
-    path('user/profile/<slug:username>/', UserProfileView.as_view(), name='profile'),
+    path(
+        'user/profile/<slug:username>/',
+        UserProfileView.as_view(),
+        name='profile'),
     path('post/<slug:post_slug>/like', like, name='like'),
     path('post/<slug:post_slug>/dislike', dislike, name='dislike'),
     path('user/<slug:username>/follow/', follow_author, name='follow'),

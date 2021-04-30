@@ -9,7 +9,8 @@ class DataMixin:
         cats = Category.objects.all()
         context['cats'] = cats
         context['banner'] = Post.objects.all().select_related('category')[:5]
-        context['three_post'] = Post.objects.all().select_related('category')[:3]
+        context['three_post'] = Post.objects.all().select_related('category')[
+            :3]
         return context
 
     def cont_comment(self, slug, **kwargs):
@@ -49,7 +50,7 @@ class DataMixin:
     def subscription(self, **kwargs):
         context = kwargs
         user = UserProfile.objects.get(username=self.kwargs['username'])
-        followers =[]
+        followers = []
         follow = False
         following = user.following.all()
         for us in following:

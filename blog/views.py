@@ -49,7 +49,8 @@ class ShowGroup(DataMixin, ListView):
     raise_exception = True
 
     def get_queryset(self):
-        return Post.objects.filter(category__slug=self.kwargs['group_slug']).select_related('category')
+        return Post.objects.filter(
+            category__slug=self.kwargs['group_slug']).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -234,7 +235,8 @@ class UserView(DataMixin, ListView):
     template_name = 'posts/user_post.html'
 
     def get_queryset(self):
-        return Post.objects.filter(author__username=self.kwargs['username']).select_related('author').prefetch_related('author')
+        return Post.objects.filter(author__username=self.kwargs['username']).select_related(
+            'author').prefetch_related('author')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -244,7 +246,8 @@ class UserView(DataMixin, ListView):
             title='Посты пользователя ' +
             self.kwargs['username'])
         follow = self.subscription()
-        return dict(list(context.items()) + list(mixin.items()) + list(follow.items()))
+        return dict(list(context.items()) +
+                    list(mixin.items()) + list(follow.items()))
 
 
 @login_required
@@ -272,9 +275,12 @@ class UserProfileView(DataMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = UserProfile.objects.get(username=self.request.user)
-        context['other_user'] = Post.objects.exclude(author__username=self.request.user)[:3]
-        mixin = self.get_user_context(title='Кабинет ' + self.kwargs['username'])
-        return dict(list(context.items()) + list(mixin.items()) + list(self.subscription().items()))
+        context['other_user'] = Post.objects.exclude(
+            author__username=self.request.user)[:3]
+        mixin = self.get_user_context(
+            title='Кабинет ' + self.kwargs['username'])
+        return dict(list(context.items()) + list(mixin.items()) +
+                    list(self.subscription().items()))
 
 
 @login_required
@@ -282,8 +288,8 @@ def follow_author(request, username):
     author = get_object_or_404(UserProfile, username=username)
     if request.user != author:
         Follow.objects.create(
-            author = author,
-            user = request.user
+            author=author,
+            user=request.user
         )
     return redirect('user', username)
 
@@ -308,12 +314,12 @@ def delete_user(request, username):
 class UpdateUerView(mixins.LoginRequiredMixin, DataMixin, UpdateView):
     form_class = RegisterUserForm
     template_name = 'users/update.html'
-    context_object_name ='user'
-    
+    context_object_name = 'user'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         mixin = self.get_user_context(title="Редактирование ")
-        return dict(list(context.items()) +list(mixin.items()))
+        return dict(list(context.items()) + list(mixin.items()))
 
     def get_object(self):
         return self.request.user
